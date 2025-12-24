@@ -1,0 +1,15 @@
+{
+  "name": "LogiLink SA",
+  "short_name": "LogiLink",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff8c00",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2343/2343894.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

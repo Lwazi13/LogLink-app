@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiLink SA | Dispatcher</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff8c00">
+</head>
+<body>
+
+    
+
+    <nav>
+            <img class="img-logo"    src="images/LOGILINK LOGO.png">
+        <h1>LogiLink <span>South Africa</span></h1>
+    </nav>
+
+    <div class="container">
+        <section class="booking-form">
+            <h2>Book New Slot</h2>
+            <input type="text" id="truckReg" placeholder="Truck Registration (e.g. ABC 123 GP)">
+            <input type="datetime-local" id="slotTime">
+            <button onclick="bookSlot()">Generate Driver Pass</button>
+        </section>
+
+        <section class="live-feed">
+            <h2>Live Gate Activity</h2>
+            <div id="scanList">
+                <p>Waiting for scans...</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="script/app.js"></script>
+
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
+</body>
+</html>

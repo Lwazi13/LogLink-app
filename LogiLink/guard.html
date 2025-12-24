@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiLink SA | Guard Scanner</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff8c00">
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        #reader { width: 100%; max-width: 400px; margin: auto; border-radius: 15px; overflow: hidden; border: 2px solid #333; }
+        .result-card { background: white; color: #333; margin-top: 20px; padding: 20px; border-radius: 15px; display: none; }
+        .verify-btn { background: #28a745; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; }
+        .cancel-btn { background: #dc3545; color: white; border: none; padding: 10px; margin-top: 10px; border-radius: 8px; width: 100%; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Gate Scanner</h1>
+    <p>Point camera at Driver's QR Code</p>
+    
+    <div id="reader"></div>
+
+    <div id="result-card" class="result-card">
+        <h2 id="displayReg">TRUCK ID</h2>
+        <p id="displayTime">Time: --:--</p>
+        <button class="verify-btn" onclick="verifyEntry()">CONFIRM ENTRY</button>
+        <button class="cancel-btn" onclick="location.reload()">RESCAN</button>
+    </div>
+
+    <script src="script/guard-logic.js"></script>
+</body>
+</html>

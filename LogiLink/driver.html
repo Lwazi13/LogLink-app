@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiLink | Driver Pass</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff8c00">
+</head>
+<body style="text-align: center; background: #002147; color: white;">
+
+    <div class="pass-container">
+        <h1>Driver Pass</h1>
+        <p id="truckReg">Loading...</p>
+        
+        <div id="qrcode" style="display: flex; justify-content: center; margin: 20px; padding: 10px; background: white; border-radius: 10px;"></div>
+
+        <div class="info-card">
+            <p><strong>Appointment:</strong> <span id="slotTime">--:--</span></p>
+            <p><strong>Status:</strong> <span id="status">Checking...</span></p>
+        </div>
+    </div>
+
+    <script src="script/driver-logic.js"></script>
+</body>
+</html>
