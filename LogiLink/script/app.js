@@ -51,3 +51,34 @@ function bookSlot() {
         alert("Please enter Registration and Time");
     }
 }
+
+// Reference to our slots
+const historyRef = database.ref('slots');
+
+historyRef.on('value', (snapshot) => {
+    const historyLog = document.getElementById('historyLog');
+    historyLog.innerHTML = ""; // Clear list before reloading
+    
+    const data = snapshot.val();
+    
+    for (let id in data) {
+        const truck = data[id];
+        
+        // Only show trucks that have been processed by the guard
+        if (truck.status === "Verified" || truck.status === "Completed") {
+            const entryDiv = document.createElement('div');
+            entryDiv.style.borderBottom = "1px solid #ccc";
+            entryDiv.style.padding = "10px 0";
+            
+            entryDiv.innerHTML = `
+                <span style="color: green; font-weight: bold;">✔</span> 
+                <strong>${truck.registration}</strong> 
+                <span style="margin-left: 15px; color: #666;">
+                    Checked in at: ${truck.entryTime || 'Time not logged'}
+                </span>
+                <br><small>Driver: ${truck.driverName} | Phone: ${truck.driverPhone}</small>
+            `;
+            historyLog.prepend(entryDiv); // Newest at the top
+        }
+    }
+});
