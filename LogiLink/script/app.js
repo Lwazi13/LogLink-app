@@ -75,7 +75,7 @@ historyRef.on('value', (snapshot) => {
                 <strong>${truck.registration}</strong> 
                 <span style="margin-left: 15px; color: #666;">
                     Checked in at: ${truck.entryTime || 'Time not logged'}
-                    Shcheduled at : ${time}
+                    
                 </span>
           
             `;
