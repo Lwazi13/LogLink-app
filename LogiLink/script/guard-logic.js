@@ -68,3 +68,39 @@ function verifyEntry() {
         });
     }
 }
+
+const SECRET_PIN = "4085"; 
+
+function checkPin() {
+    const pinInput = document.getElementById('gatePin');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const msg = document.getElementById('pinMessage');
+
+    if (pinInput.value === SECRET_PIN) {
+        // PIN is correct
+        confirmBtn.disabled = false;
+        confirmBtn.style.backgroundColor = "#28a745"; // Turns Green
+        confirmBtn.style.cursor = "pointer";
+        msg.innerText = "✓ PIN Verified";
+        msg.style.color = "green";
+        pinInput.style.borderColor = "green";
+    } else {
+        // PIN is wrong or incomplete
+        confirmBtn.disabled = true;
+        confirmBtn.style.backgroundColor = "#ccc";
+        confirmBtn.style.cursor = "not-allowed";
+        msg.innerText = pinInput.value.length >= 4 ? "❌ Incorrect PIN" : "";
+        msg.style.color = "red";
+    }
+}
+
+function confirmEntry() {
+    // ... your existing logic to update Firebase to "Verified" ...
+    
+    // Clear the security field for the next truck
+    document.getElementById('gatePin').value = "";
+    document.getElementById('confirmBtn').disabled = true;
+    document.getElementById('confirmBtn').style.backgroundColor = "#ccc";
+    
+    alert("Truck Verified and Entry Logged!");
+}

@@ -109,8 +109,7 @@ database.ref('slots').on('value', (snapshot) => {
                     <button onclick="window.open('driver.html?id=${id}', '_blank')" 
                     style="width: auto; background: #555; padding: 8px 12px;">View</button>
             
-                    <button onclick="shareWhatsApp('${id}', '${truck.registration}')" 
-                    style="width: auto; background: #25D366; padding: 8px 12px;">WhatsApp</button>
+                  
             
                     <button onclick="removeTruck('${id}')" 
                     style="width: auto; background: #dc3545; padding: 8px 12px;">Remove</button>
@@ -127,12 +126,7 @@ database.ref('slots').on('value', (snapshot) => {
 
 });
 
-function shareWhatsApp(id, registration) {
-    const baseUrl = "https://your-app-name.netlify.app/driver.html"; // <--- CHANGE THIS
-    const fullUrl = `${baseUrl}?id=${id}`;
-    const message = `*LogiLink Entry Pass*%0A*Truck:* ${registration}%0A*Link:* ${fullUrl}`;
-    window.open(`https://wa.me/?text=${message}`, '_blank');
-}
+
 
 function removeTruck(id) {
     if (confirm("Are you sure you want to delete this appointment?")) {
