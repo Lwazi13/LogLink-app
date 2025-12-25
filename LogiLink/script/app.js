@@ -1,12 +1,12 @@
 // Paste your Firebase Config here from the Firebase Console
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "your-project.firebaseapp.com",
+  apiKey: "AIzaSyCNaPOvbyCJ1RhZM2UyF0JrfOAEndItC6o",
+  authDomain:"logilink-e9773.firebaseapp.com",
   databaseURL: "https://logilink-e9773-default-rtdb.europe-west1.firebasedatabase.app/",
-  projectId: "your-project",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "your-id",
-  appId: "your-app-id"
+  projectId: "logilink-e9773",
+  storageBucket: "logilink-e9773.firebasestorage.app",
+  messagingSenderId: "112066077154",
+  appId: "1:112066077154:web:07d60273f85f3855bed9bb"
 };
 
 // Initialize Firebase
@@ -76,7 +76,7 @@ historyRef.on('value', (snapshot) => {
                 <span style="margin-left: 15px; color: #666;">
                     Checked in at: ${truck.entryTime || 'Time not logged'}
                 </span>
-                <br><small>Driver: ${truck.driverName} | Phone: ${truck.driverPhone}</small>
+          
             `;
             historyLog.prepend(entryDiv); // Newest at the top
         }
