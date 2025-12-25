@@ -103,7 +103,7 @@ database.ref('slots').on('value', (snapshot) => {
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <strong>${truck.registration}</strong><br>
-                     <small>${truck.driverName}</small>
+                     
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <button onclick="window.open('driver.html?id=${id}', '_blank')" 
