@@ -15,3 +15,17 @@ button:hover { background: #003366; }
     margin-right: 10px;
     
 }
+
+.action-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap; /* Helps on smaller screens */
+}
+
+/* Red Delete Button Style */
+button.btn-delete {
+    background-color: #dc3545;
+}
+button.btn-delete:hover {
+    background-color: #a71d2a;
+}

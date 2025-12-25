@@ -82,3 +82,66 @@ historyRef.on('value', (snapshot) => {
         }
     }
 });
+
+// Listen for all trucks and filter for "Scheduled" ones
+database.ref('slots').on('value', (snapshot) => {
+    const activeList = document.getElementById('activeTrucksList');
+    activeList.innerHTML = ""; // Clear the list
+    
+    const data = snapshot.val();
+    
+    for (let id in data) {
+        const truck = data[id];
+        
+        // ONLY show trucks that haven't been scanned yet
+        if (truck.status === "Scheduled") {
+            const truckDiv = document.createElement('div');
+            truckDiv.className = "card"; // Using your existing card style
+            truckDiv.style.borderLeft = "5px solid #ff8c00";
+            
+            truckDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>${truck.registration}</strong><br>
+                     <small>${truck.driverName}</small>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="window.open('driver.html?id=${id}', '_blank')" 
+                    style="width: auto; background: #555; padding: 8px 12px;">View</button>
+            
+                    <button onclick="shareWhatsApp('${id}', '${truck.registration}')" 
+                    style="width: auto; background: #25D366; padding: 8px 12px;">WhatsApp</button>
+            
+                    <button onclick="removeTruck('${id}')" 
+                    style="width: auto; background: #dc3545; padding: 8px 12px;">Remove</button>
+                </div>
+                </div>
+
+            `;
+            activeList.appendChild(truckDiv);
+
+        }
+    }
+
+
+
+});
+
+function shareWhatsApp(id, registration) {
+    const baseUrl = "https://your-app-name.netlify.app/driver.html"; // <--- CHANGE THIS
+    const fullUrl = `${baseUrl}?id=${id}`;
+    const message = `*LogiLink Entry Pass*%0A*Truck:* ${registration}%0A*Link:* ${fullUrl}`;
+    window.open(`https://wa.me/?text=${message}`, '_blank');
+}
+
+function removeTruck(id) {
+    if (confirm("Are you sure you want to delete this appointment?")) {
+        database.ref('slots/' + id).remove()
+        .then(() => {
+            console.log("Truck removed successfully");
+        })
+        .catch((error) => {
+            alert("Error removing truck: " + error.message);
+        });
+    }
+}
