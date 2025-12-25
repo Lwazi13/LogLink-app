@@ -22,6 +22,8 @@
 </head>
 <body>
 
+ 
+
     <h1>Gate Scanner</h1>
     <p>Point camera at Driver's QR Code</p>
     
@@ -37,18 +39,5 @@
     <script src="script/guard-logic.js"></script>
 </body>
 
-<div class="card" id="securitySection" style="margin-top: 20px; border: 2px solid #ff8c00;">
-    <h3>Security Access</h3>
-    <p>Enter Gate PIN to confirm entry:</p>
-    <input type="password" id="gatePin" placeholder="Enter 4-Digit PIN" 
-           style="font-size: 24px; text-align: center; letter-spacing: 10px;" 
-           oninput="checkPin()">
-    
-    <div id="pinMessage" style="color: red; font-size: 14px; margin-top: 5px;"></div>
-</div>
 
-<button id="confirmBtn" onclick="confirmEntry()" disabled 
-        style="background-color: #ccc; cursor: not-allowed;">
-    Confirm Entry
-</button>
 </html>
