@@ -1,4 +1,35 @@
-// Paste your Firebase Config here from the Firebase Console
+// 1. Get the "id" from the URL (e.g., ?id=Company1)
+const urlParams = new URLSearchParams(window.location.search);
+const currentCompanyID = urlParams.get('id');
+
+// 2. The "Security Gate": If no ID is in the link, show an error
+if (!currentCompanyID) {
+    document.body.innerHTML = `
+        <div style="text-align:center; margin-top:50px; font-family:Arial;">
+            <h1>Invalid Access Link</h1>
+            <p>Please use the unique link provided to your company.</p>
+        </div>`;
+    throw new Error("No Company ID provided");
+}
+
+// 3. Point the app to the folders you just imported
+// This makes sure Company1 only sees data/Company1/
+const companyDataPath = `data/${currentCompanyID}`;
+const slotsRef = database.ref(`${companyDataPath}/slots`);
+var historyRef = database.ref(`${companyDataPath}/history`);
+
+// 4. Check if the company is blocked before showing data
+database.ref(`companies/${currentCompanyID}/isBlocked`).on('value', snapshot => {
+    if (snapshot.val() === true) {
+        document.body.innerHTML = "<h1>Account Suspended. Contact Admin.</h1>";
+    }
+});
+
+
+
+
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyCNaPOvbyCJ1RhZM2UyF0JrfOAEndItC6o",
   authDomain:"logilink-e9773.firebaseapp.com",
@@ -50,7 +81,7 @@ function bookSlot() {
 }
 
 // Reference to our slots
-const historyRef = database.ref('slots');
+var historyRef = database.ref('slots');
 
 historyRef.on('value', (snapshot) => {
     const historyLog = document.getElementById('historyLog');
