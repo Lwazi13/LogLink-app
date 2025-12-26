@@ -1,34 +1,3 @@
-// 1. Get the "id" from the URL (e.g., ?id=Company1)
-const urlParams = new URLSearchParams(window.location.search);
-const currentCompanyID = urlParams.get('id');
-
-// 2. The "Security Gate": If no ID is in the link, show an error
-if (!currentCompanyID) {
-    document.body.innerHTML = `
-        <div style="text-align:center; margin-top:50px; font-family:Arial;">
-            <h1>Invalid Access Link</h1>
-            <p>Please use the unique link provided to your company.</p>
-        </div>`;
-    throw new Error("No Company ID provided");
-}
-
-// 3. Point the app to the folders you just imported
-// This makes sure Company1 only sees data/Company1/
-const companyDataPath = `data/${currentCompanyID}`;
-const slotsRef = database.ref(`${companyDataPath}/slots`);
-var historyRef = database.ref(`${companyDataPath}/history`);
-
-// 4. Check if the company is blocked before showing data
-database.ref(`companies/${currentCompanyID}/isBlocked`).on('value', snapshot => {
-    if (snapshot.val() === true) {
-        document.body.innerHTML = "<h1>Account Suspended. Contact Admin.</h1>";
-    }
-});
-
-
-
-
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyCNaPOvbyCJ1RhZM2UyF0JrfOAEndItC6o",
@@ -45,23 +14,87 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 // FUNCTION: Book a slot
-function bookSlot() {
-    const reg = document.getElementById('truckReg').value;
-    const time = document.getElementById('slotTime').value;
+// 1. --- GET COMPANY ID FROM URL ---
+const urlParams = new URLSearchParams(window.location.search);
+const currentCompanyID = urlParams.get('id');
 
-    if(reg && time) {
-        // Clean the registration to create a solid ID (e.g., "KNP 123 GP" -> "KNP-123-GP")
-        const truckId = reg.replace(/\s+/g, '-').toUpperCase();
-        
-        database.ref('slots/' + truckId).set({
-            registration: reg,
-            appointmentTime: time,
-            status: "Scheduled",
-            bookedAt: new Date().toISOString()
-        }).then(() => {
-            // SUCCESS: Build the link for the driver page
-            const currentPath = window.location.pathname.replace('index.html', '');
-            const driverUrl = `${window.location.origin}${currentPath}driver.html?id=${truckId}`;
+// If no ID, block the page
+if (!currentCompanyID) {
+    document.body.innerHTML = "<div style='text-align:center; margin-top:50px;'><h1>Access Denied</h1><p>Please use your unique company link.</p></div>";
+    throw new Error("No Company ID");
+}
+
+// 2. --- DATABASE REFERENCES ---
+const slotsRef = database.ref(`data/${currentCompanyID}/slots`);
+var historyRef = database.ref(`data/${currentCompanyID}/history`);
+const companyStatusRef = database.ref(`companies/${currentCompanyID}/isBlocked`);
+
+// 3. --- SECURITY CHECK (KILL-SWITCH) ---
+companyStatusRef.on('value', snapshot => {
+    if (snapshot.val() === true) {
+        document.body.innerHTML = "<h1>Account Suspended. Contact Admin.</h1>";
+    }
+});
+
+// 4. --- ADD NEW BOOKING & GENERATE QR ---
+function addNewEntry() {
+    const reg = document.getElementById('regInput').value;
+    const time = document.getElementById('timeInput').value;
+
+    if (reg && time) {
+        const newRef = slotsRef.push();
+        const truckData = {
+            registration: reg.toUpperCase(),
+            scheduledTime: time,
+            status: "Pending",
+            company: currentCompanyID,
+            createdAt: Date.now()
+        };
+
+        newRef.set(truckData).then(() => {
+            generateQRCode(newRef.key, reg);
+            alert("Booking Saved Successfully!");
+            document.getElementById('regInput').value = '';
+        });
+    } else {
+        alert("Please enter Registration and Time.");
+    }
+}
+
+function generateQRCode(truckId, reg) {
+    const qrContainer = document.getElementById('qrcode');
+    qrContainer.innerHTML = ""; // Clear old one
+    
+    // Data encoded: CompanyID | TruckID
+    const qrData = `${currentCompanyID}|${truckId}`;
+
+    new QRCode(qrContainer, {
+        text: qrData,
+        width: 150,
+        height: 150
+    });
+    document.getElementById('pass-info').innerText = `Pass for: ${reg}`;
+}
+
+// 5. --- DISPLAY COMPLETED ENTRIES (30 DAY FILTER) ---
+const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+
+historyRef.orderByChild('timestamp').startAt(thirtyDaysAgo).on('value', snapshot => {
+    const tableBody = document.getElementById('historyTableBody');
+    tableBody.innerHTML = '';
+
+    snapshot.forEach(child => {
+        const data = child.val();
+        tableBody.innerHTML += `
+            <tr>
+                <td>${data.registration}</td>
+                <td>${data.bookedTime}</td>
+                <td>${data.scannedTime}</td>
+                <td><span class="badge">${data.status}</span></td>
+            </tr>
+        `;
+    });
+});
             
             // Show a success message with a clickable button
             const list = document.getElementById('scanList');
@@ -74,11 +107,7 @@ function bookSlot() {
                 </div>
             `;
             list.innerHTML = successCard + list.innerHTML;
-        });
-    } else {
-        alert("Please enter Registration and Time");
-    }
-}
+
 
 // Reference to our slots
 var historyRef = database.ref('slots');
