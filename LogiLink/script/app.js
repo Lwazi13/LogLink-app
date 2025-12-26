@@ -38,11 +38,8 @@ function bookSlot() {
                 <div class="truck-card" style="border: 2px solid #ff8c00; background: #fff9f0; padding: 15px; margin-bottom: 10px;">
                     <p>✅ <strong>Slot Booked!</strong></p>
                     <p>Registration: ${reg}</p>
-                    <button onclick="window.open('${driverUrl}', '_blank')" 
-                            style="background: #ff8c00; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
-                        OPEN DRIVER PASS
-                    </button>
-                    <p style="font-size: 10px; margin-top: 10px; word-break: break-all;">Link: ${driverUrl}</p>
+                 
+                    <p style="font-size: 15px; margin-top: 10px; word-break: break-all;">Share this link with the driver: ${driverUrl}</p>
                 </div>
             `;
             list.innerHTML = successCard + list.innerHTML;
